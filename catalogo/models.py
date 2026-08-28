@@ -77,3 +77,6 @@ class Producto(models.Model):
         if self.imagen_url:
             return self.imagen_url
         return None
+
+    def get_absolute_url(self):
+        return reverse('producto_detalle', kwargs={'pk': self.pk})

@@ -45,6 +45,21 @@ def productos_view(request):
     })
 
 
+def producto_detalle(request, pk):
+    """Página de detalle del producto."""
+    producto = get_object_or_404(Producto, pk=pk, activo=True)
+    # Productos relacionados de la misma categoría (excluyendo el actual)
+    productos_relacionados = Producto.objects.filter(
+        categoria=producto.categoria,
+        activo=True
+    ).exclude(pk=pk)[:3]
+    
+    return render(request, 'producto_detalle.html', {
+        'producto': producto,
+        'productos_relacionados': productos_relacionados,
+    })
+
+
 # ─────────────────────────────────────────────
 #  PANEL ADMIN PERSONALIZADO
 # ─────────────────────────────────────────────

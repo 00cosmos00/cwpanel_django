@@ -5,6 +5,7 @@ urlpatterns = [
     # Públicas
     path('', views.index, name='index'),
     path('productos/', views.productos_view, name='productos'),
+    path('productos/<int:pk>/', views.producto_detalle, name='producto_detalle'),
 
     # Panel admin personalizado
     path('panel/', views.panel_dashboard, name='panel_dashboard'),
