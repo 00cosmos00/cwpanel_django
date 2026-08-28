@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}CW Panel Ltda. | Tableros de Mueblería & Maderas Nobles{% endblock %}</title>
+  <meta name="description" content="Especialistas en la fabricación de tableros alistonados y finger-joint en Pino Oregón, Acacia y maderas nobles.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    /* ====== VARIABLES ====== */
+    :root {
+      --forest-dark: #0b2215;
+      --forest-deep: #133823;
+      --forest-main: #1f5537;
+      --forest-light: #347c51;
+      --forest-soft: #edf5f0;
+      --wood-dark: #3a220f;
+      --wood-rich: #653e1b;
+      --wood-main: #8f5d2f;
+      --wood-warm: #b8824b;
+      --wood-light: #dfb987;
+      --wood-soft: #f7ece0;
+      --gold-accent: #d4af37;
+      --bg-canvas: #faf8f4;
+      --bg-cream: #f5efe5;
+      --bg-surface: rgba(255,255,255,0.88);
+      --bg-card-solid: #ffffff;
+      --text-heading: #121d15;
+      --text-body: #344037;
+      --text-muted: #657067;
+      --text-light: #ffffff;
+      --text-cream: #ece5d6;
+      --border-subtle: rgba(184,130,75,0.2);
+      --border-card: rgba(230,223,211,0.85);
+      --shadow-sm: 0 4px 12px rgba(11,34,21,0.04);
+      --shadow-md: 0 10px 25px rgba(11,34,21,0.06);
+      --font-title: 'Cinzel', serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font-body);
+      background: linear-gradient(135deg, #fbf9f6 0%, #f4ece1 100%);
+      color: var(--text-body);
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* CANVAS ÁRBOL */
+    #treeCanvas {
+      position: fixed; top:0; left:0;
+      width:100vw; height:100vh;
+      z-index:0; pointer-events:none;
+    }
+
+    /* Barra progreso scroll */
+    .scroll-progress {
+      position: fixed; top:0; left:0; height:3px;
+      background: linear-gradient(90deg, var(--wood-warm), var(--gold-accent), var(--forest-light));
+      width:0%; z-index:1000; transition: width 0.08s linear;
+    }
+
+    .container { max-width:1200px; margin:0 auto; padding:0 24px; position:relative; z-index:10; }
+
+    .reveal { opacity:0; transform:translateY(16px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+    .reveal.active { opacity:1; transform:translateY(0); }
+    .delay-1 { transition-delay: 0.08s; }
+    .delay-2 { transition-delay: 0.16s; }
+    .delay-3 { transition-delay: 0.24s; }
+    .delay-4 { transition-delay: 0.32s; }
+
+    /* ====== HEADER ====== */
+    header {
+      position: sticky; top:0;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-subtle);
+      z-index:900; transition: background 0.25s ease, box-shadow 0.25s ease;
+    }
+    header.scrolled {
+      background: rgba(255,255,255,0.97);
+      box-shadow: 0 4px 20px rgba(11,34,21,0.05);
+      border-bottom-color: rgba(184,130,75,0.3);
+    }
+    .nav-bar { display:flex; justify-content:space-between; align-items:center; height:78px; }
+
+    .brand-group { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .brand-logo-icon {
+      width:38px; height:38px;
+      background: linear-gradient(135deg, var(--forest-dark), var(--forest-deep));
+      color: var(--wood-light);
+      border: 1px solid var(--wood-warm);
+      border-radius: 8px;
+      display:flex; align-items:center; justify-content:center; font-size:1.15rem;
+    }
+    .brand-title { font-family:var(--font-title); font-size:1.22rem; font-weight:800; letter-spacing:2px; color:var(--forest-dark); line-height:1.1; display:block; }
+    .brand-sub { font-size:0.62rem; letter-spacing:2px; text-transform:uppercase; color:var(--wood-rich); font-weight:700; display:block; }
+
+    .nav-links { display:flex; gap:24px; list-style:none; align-items:center; }
+    .nav-links a { text-decoration:none; color:var(--text-heading); font-size:0.82rem; font-weight:600; letter-spacing:0.8px; text-transform:uppercase; padding:6px 0; transition:color 0.2s ease; }
+    .nav-links a:hover, .nav-links a.active { color:var(--forest-main); }
+
+    .btn-quote-header {
+      display:inline-flex; align-items:center; gap:8px;
+      background: linear-gradient(135deg, var(--forest-deep), var(--forest-dark));
+      color:var(--text-light); padding:9px 18px; border-radius:6px;
+      text-decoration:none; font-size:0.78rem; letter-spacing:0.8px;
+      font-weight:700; text-transform:uppercase;
+      border:1px solid rgba(212,175,55,0.4); transition:background 0.2s ease;
+    }
+    .btn-quote-header:hover { background: linear-gradient(135deg, var(--wood-rich), var(--wood-dark)); color:var(--text-light); }
+
+    .mobile-toggle { display:none; background:none; border:none; font-size:1.35rem; color:var(--forest-dark); cursor:pointer; padding:8px; }
+    .mobile-menu {
+      display:none; position:fixed; top:78px; left:0; width:100%;
+      background: rgba(255,255,255,0.98);
+      border-bottom: 2px solid var(--wood-warm);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      padding:20px; z-index:899;
+    }
+    .mobile-menu.open { display:block; }
+    .mobile-nav-links { list-style:none; display:flex; flex-direction:column; gap:14px; text-align:center; }
+    .mobile-nav-links a { text-decoration:none; color:var(--forest-dark); font-size:0.95rem; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; }
+
+    /* ====== FOOTER ====== */
+    footer {
+      background: linear-gradient(135deg, #0e1f15, #0b2215);
+      color: var(--text-cream); padding: 50px 0 0;
+      position:relative; z-index:10;
+    }
+    .footer-main-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:36px; padding-bottom:32px; border-bottom:1px solid rgba(255,255,255,0.06); }
+    .footer-brand-pane h4 { font-family:var(--font-title); font-size:1.1rem; letter-spacing:2px; color:var(--wood-light); margin-bottom:10px; }
+    .footer-brand-pane p { font-size:0.84rem; line-height:1.6; color:rgba(255,255,255,0.6); margin-bottom:16px; }
+    .footer-links-title { font-family:var(--font-title); font-size:0.75rem; letter-spacing:2px; text-transform:uppercase; color:var(--wood-warm); margin-bottom:14px; }
+    .contact-item-row { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:0.84rem; color:rgba(255,255,255,0.65); }
+    .contact-item-row i { color:var(--wood-warm); margin-top:2px; flex-shrink:0; }
+    .contact-item-row a { color:rgba(255,255,255,0.65); text-decoration:none; }
+    .contact-item-row a:hover { color:var(--wood-light); }
+    .footer-bottom-bar { display:flex; justify-content:space-between; align-items:center; padding:16px 0; font-size:0.76rem; color:rgba(255,255,255,0.35); flex-wrap:wrap; gap:8px; }
+    .footer-bottom-tag { color:rgba(255,255,255,0.35); }
+
+    /* ====== TOAST ====== */
+    .toast-msg {
+      position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(20px);
+      background:#fff; border-radius:10px; padding:14px 22px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+      display:flex; align-items:center; gap:10px;
+      font-size:0.88rem; font-weight:600; color:var(--text-heading);
+      opacity:0; pointer-events:none; transition:all 0.3s ease; z-index:9999;
+    }
+    .toast-msg.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+    @media (max-width:768px) {
+      .nav-links, .btn-quote-header { display:none; }
+      .mobile-toggle { display:block; }
+      .footer-main-grid { grid-template-columns:1fr; }
+      .footer-bottom-bar { flex-direction:column; text-align:center; }
+    }
+  </style>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <div class="scroll-progress" id="scrollBar"></div>
+  <canvas id="treeCanvas"></canvas>
+
+  <!-- HEADER -->
+  <header id="mainHeader">
+    <div class="container">
+      <nav class="nav-bar">
+        <a href="{% url 'index' %}" class="brand-group">
+          <div class="brand-logo-icon"><i class="fa-solid fa-tree"></i></div>
+          <div>
+            <span class="brand-title">CW PANEL</span>
+            <span class="brand-sub">Maderas Nobles · Chile</span>
+          </div>
+        </a>
+        <ul class="nav-links">
+          <li><a href="{% url 'index' %}#nosotros" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>Nosotros</a></li>
+          <li><a href="{% url 'index' %}#especies">Especies</a></li>
+          <li><a href="{% url 'productos' %}" {% if request.resolver_match.url_name == 'productos' %}class="active"{% endif %}>Productos</a></li>
+          <li><a href="{% url 'index' %}#galeria">Galería</a></li>
+          <li><a href="{% url 'index' %}#redes">Contacto</a></li>
+        </ul>
+        <a href="https://wa.me/56996422795?text=Hola%20CW%20Panel%2C%20quisiera%20una%20cotizaci%C3%B3n" target="_blank" class="btn-quote-header">
+          <i class="fa-brands fa-whatsapp"></i> Cotizar
+        </a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Menú">
+          <i class="fa-solid fa-bars" id="toggleIcon"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <ul class="mobile-nav-links">
+      <li><a href="{% url 'index' %}#nosotros">Nosotros</a></li>
+      <li><a href="{% url 'index' %}#especies">Especies</a></li>
+      <li><a href="{% url 'productos' %}">Productos</a></li>
+      <li><a href="{% url 'index' %}#galeria">Galería</a></li>
+      <li><a href="{% url 'index' %}#redes">Contacto</a></li>
+      <li><a href="https://wa.me/56996422795" target="_blank">💬 Cotizar por WhatsApp</a></li>
+    </ul>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main>
+    {% if messages %}
+      <div style="position:fixed;top:90px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;">
+        {% for message in messages %}
+          <div style="background:{% if message.tags == 'success' %}#1f5537{% else %}#8f3030{% endif %};color:#fff;padding:12px 20px;border-radius:8px;font-size:0.88rem;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,0.15);display:flex;align-items:center;gap:10px;">
+            <i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% else %}fa-circle-exclamation{% endif %}"></i>
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-main-grid reveal">
+        <div class="footer-brand-pane">
+          <h4>CW PANEL LTDA.</h4>
+          <p>Planta de manufactura especializada en la elaboración de tableros alistonados finger-joint y piezas dimensionadas de maderas nobles para la industria del mueble, construcción y arquitectura fina en Chile.</p>
+          <div style="display:flex;gap:12px;">
+            <a href="https://wa.me/56996422795" target="_blank" style="color:var(--wood-light);font-size:1.25rem;"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="https://instagram.com" target="_blank" style="color:var(--wood-light);font-size:1.25rem;"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://facebook.com" target="_blank" style="color:var(--wood-light);font-size:1.25rem;"><i class="fa-brands fa-facebook"></i></a>
+            <a href="mailto:contacto@cwpanel.cl" style="color:var(--wood-light);font-size:1.25rem;"><i class="fa-solid fa-envelope"></i></a>
+          </div>
+        </div>
+        <div>
+          <h5 class="footer-links-title">Ubicación & Planta</h5>
+          <div class="contact-item-row"><i class="fa-solid fa-location-dot"></i><span>Pufudi PC9 - San José de La Mariquina, Región de Los Ríos, Chile</span></div>
+          <div class="contact-item-row"><i class="fa-solid fa-truck-fast"></i><span>Despachos a todo Chile</span></div>
+        </div>
+        <div>
+          <h5 class="footer-links-title">Contacto Comercial</h5>
+          <div class="contact-item-row"><i class="fa-solid fa-phone"></i><a href="tel:+56996422795">+56 9 96422795</a></div>
+          <div class="contact-item-row"><i class="fa-solid fa-envelope"></i><a href="mailto:contacto@cwpanel.cl">contacto@cwpanel.cl</a></div>
+          <div class="contact-item-row"><i class="fa-solid fa-clock"></i><span>Lunes a Viernes: 08:30 a 18:00 hrs</span></div>
+        </div>
+      </div>
+      <div class="footer-bottom-bar">
+        <span>© 2026 CW Panel Ltda. Todos los derechos reservados.</span>
+        <span class="footer-bottom-tag">CW Panel Ltda. — Calidad que construye tus ideas. 🍃</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast-msg" id="toastBox">
+    <i class="fa-solid fa-circle-check" style="color:#25D366;"></i>
+    <span id="toastText">Correo copiado al portapapeles</span>
+  </div>
+
+  <!-- ÁRBOL CANVAS + SCRIPTS -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvas = document.getElementById('treeCanvas');
+      const ctx = canvas.getContext('2d', { alpha: true });
+      let width, height, branches = [], flowers = [];
+      let currentProgress = 0, targetProgress = 0, maxProgressReached = 0;
+
+      function createFlowerSprite(petalColor, centerColor, isGold) {
+        const off = document.createElement('canvas');
+        const size = 48; off.width = size; off.height = size;
+        const c = off.getContext('2d');
+        const cx = size/2, cy = size/2, pl = 14, pw = 7;
+        c.fillStyle = petalColor;
+        for (let i=0;i<5;i++){
+          c.save(); c.translate(cx,cy); c.rotate((i*Math.PI*2)/5);
+          c.beginPath(); c.ellipse(0,-pl*0.65,pw,pl*0.65,0,0,Math.PI*2); c.fill(); c.restore();
+        }
+        c.fillStyle = centerColor; c.beginPath(); c.arc(cx,cy,4.5,0,Math.PI*2); c.fill();
+        if(isGold){ c.fillStyle='#fff'; c.beginPath(); c.arc(cx-1,cy-1,1.8,0,Math.PI*2); c.fill(); }
+        return off;
+      }
+      const sprites = [
+        createFlowerSprite('#2d6a4f','#d4af37',false),
+        createFlowerSprite('#3d8b5a','#f3d06a',false),
+        createFlowerSprite('#d4af37','#ffeaa7',true),
+        createFlowerSprite('#52b788','#2d6a4f',false),
+      ];
+
+      function resize() {
+        width = window.innerWidth; height = window.innerHeight;
+        const dpr = Math.min(window.devicePixelRatio||1,1.5);
+        canvas.width = width*dpr; canvas.height = height*dpr;
+        canvas.style.width = width+'px'; canvas.style.height = height+'px';
+        ctx.scale(dpr,dpr);
+        generateTree(); renderScene();
+      }
+      window.addEventListener('resize', ()=>{ clearTimeout(window.rt); window.rt=setTimeout(resize,180); });
+
+      function generateTree() {
+        branches=[]; flowers=[];
+        const sx=width/2, sy=height+40;
+        const tl=Math.min(height*0.165,132), tt=Math.max(width*0.016,14);
+        buildBranch(sx,sy,tl,-Math.PI/2,tt,7,0);
+        buildBranch(sx-14,sy-tl*0.42,tl*0.86,-Math.PI/2-0.54,tt*0.8,6,1);
+        buildBranch(sx+14,sy-tl*0.42,tl*0.86,-Math.PI/2+0.54,tt*0.8,6,1);
+      }
+      function buildBranch(x,y,len,angle,thick,depth,level) {
+        const ex=x+len*Math.cos(angle), ey=y+len*Math.sin(angle);
+        const ms=0.52, sp=(level/10)*ms, ep=((level+1.4)/10)*ms;
+        branches.push({x1:x,y1:y,x2:ex,y2:ey,thickness:thick,startP:sp,endP:ep,depth});
+        if(depth<5) addFlower(ex,ey);
+        if(depth>0) {
+          const nb=(Math.random()>0.65&&depth>2)?3:2;
+          for(let i=0;i<nb;i++){
+            const dir=(i%2===0)?1:-1;
+            const av=(Math.random()*0.4+0.28)*dir;
+            buildBranch(ex,ey,len*(Math.random()*0.15+0.72),angle+av,thick*0.72,depth-1,level+1);
+          }
+        } else { addFlower(ex,ey); if(Math.random()>0.4) addFlower(ex+(Math.random()*12-6),ey+(Math.random()*12-6)); }
+      }
+      function addFlower(x,y) {
+        const bs=0.28+Math.random()*0.38;
+        flowers.push({x:x+(Math.random()*10-5),y:y+(Math.random()*10-5),startP:bs,endP:Math.min(bs+0.16,0.9),size:Math.random()*8+18,sprite:sprites[Math.floor(Math.random()*sprites.length)]});
+      }
+
+      function renderScene() {
+        ctx.clearRect(0,0,width,height);
+        const p = currentProgress;
+        branches.forEach(b=>{
+          if(p<b.startP) return;
+          const bp=Math.min((p-b.startP)/(b.endP-b.startP),1);
+          const ex=b.x1+(b.x2-b.x1)*bp, ey=b.y1+(b.y2-b.y1)*bp;
+          const woodT=Math.max(0.15,1-p*0.5);
+          const r=Math.round(58+p*120),g=Math.round(34+p*60),bl=Math.round(15+p*30);
+          ctx.strokeStyle=`rgba(${r},${g},${bl},${woodT*0.75})`;
+          ctx.lineWidth=Math.max(0.5,b.thickness*(1-p*0.3));
+          ctx.lineCap='round';
+          ctx.beginPath(); ctx.moveTo(b.x1,b.y1); ctx.lineTo(ex,ey); ctx.stroke();
+        });
+        flowers.forEach(f=>{
+          if(p<f.startP) return;
+          const fp=Math.min((p-f.startP)/(f.endP-f.startP),1);
+          if(fp<=0) return;
+          const sz=f.size*fp; const half=sz/2;
+          ctx.globalAlpha=fp*0.88;
+          ctx.drawImage(f.sprite,f.x-half,f.y-half,sz,sz);
+          ctx.globalAlpha=1;
+        });
+      }
+
+      let rafId=null;
+      function animate() {
+        const diff=targetProgress-currentProgress;
+        if(Math.abs(diff)>0.001){ currentProgress+=diff*0.06; renderScene(); rafId=requestAnimationFrame(animate); }
+        else { currentProgress=targetProgress; renderScene(); rafId=null; }
+      }
+
+      window.addEventListener('scroll',()=>{
+        const st=window.scrollY, dh=document.body.scrollHeight-window.innerHeight;
+        const raw=dh>0?st/dh:0;
+        targetProgress=Math.max(maxProgressReached,raw);
+        maxProgressReached=targetProgress;
+        // Scroll progress bar
+        document.getElementById('scrollBar').style.width=(raw*100)+'%';
+        if(!rafId) rafId=requestAnimationFrame(animate);
+      },{ passive:true });
+
+      // Header scroll effect
+      window.addEventListener('scroll',()=>{
+        document.getElementById('mainHeader').classList.toggle('scrolled',window.scrollY>50);
+      },{ passive:true });
+
+      // Reveal on scroll
+      const observer=new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('active'); }); },{threshold:0.1});
+      document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+      // Mobile menu
+      document.getElementById('mobileToggle').addEventListener('click',()=>{
+        const m=document.getElementById('mobileMenu');
+        const icon=document.getElementById('toggleIcon');
+        m.classList.toggle('open');
+        icon.className=m.classList.contains('open')?'fa-solid fa-xmark':'fa-solid fa-bars';
+      });
+
+      resize();
+    });
+
+    function showToast(msg){
+      const t=document.getElementById('toastBox');
+      document.getElementById('toastText').textContent=msg;
+      t.classList.add('show');
+      setTimeout(()=>t.classList.remove('show'),3000);
+    }
+  </script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

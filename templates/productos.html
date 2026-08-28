@@ -1,0 +1,367 @@
+{% extends "base.html" %}
+{% block title %}Productos | CW Panel Ltda.{% endblock %}
+
+{% block extra_css %}
+<style>
+  .productos-hero {
+    padding: 50px 0 30px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+  }
+  .productos-hero-card {
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.9);
+    box-shadow: 0 10px 30px rgba(11,34,21,0.05);
+    border-radius: 20px;
+    padding: 36px 28px 28px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .section-tag { font-size:0.76rem; text-transform:uppercase; letter-spacing:2.5px; font-weight:700; color:var(--wood-warm); display:block; margin-bottom:6px; }
+  .section-title { font-family:var(--font-title); font-size:clamp(1.5rem,2.5vw,2.2rem); color:var(--forest-dark); font-weight:800; letter-spacing:0.5px; }
+  .section-desc { font-size:0.95rem; color:var(--text-muted); max-width:600px; margin:8px auto 0; }
+
+  /* FILTROS */
+  .filter-bar {
+    position: relative;
+    z-index: 10;
+    padding: 20px 0 10px;
+  }
+  .filter-inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--border-card);
+    border-radius: 14px;
+    padding: 14px 20px;
+  }
+  .filter-label {
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-right: 4px;
+  }
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-card-solid);
+    color: var(--text-body);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .filter-btn:hover,
+  .filter-btn.active {
+    background: linear-gradient(135deg, var(--forest-deep), var(--forest-dark));
+    color: #fff;
+    border-color: var(--forest-deep);
+  }
+  .filter-btn i { font-size: 0.7rem; }
+
+  /* SECCIÓN POR CATEGORÍA */
+  .productos-section {
+    position: relative;
+    z-index: 10;
+    padding: 30px 0 70px;
+  }
+  .categoria-bloque {
+    margin-bottom: 60px;
+  }
+  .categoria-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--border-card);
+  }
+  .categoria-icon {
+    width: 46px; height: 46px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--forest-dark), var(--forest-deep));
+    color: var(--wood-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+  }
+  .categoria-info h2 {
+    font-family: var(--font-title);
+    font-size: 1.3rem;
+    color: var(--forest-dark);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+  .categoria-info p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  /* GRID DE PRODUCTOS */
+  .productos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .producto-card {
+    background: rgba(255,255,255,0.92);
+    border: 1px solid var(--border-card);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .producto-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(11,34,21,0.09);
+    border-color: var(--wood-warm);
+  }
+  .producto-img-wrap {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    background: var(--bg-cream);
+  }
+  .producto-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .producto-card:hover .producto-img-wrap img {
+    transform: scale(1.04);
+  }
+  .no-imagen {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+  }
+  .no-imagen i { font-size: 2rem; color: var(--wood-warm); }
+  .badge-destacado {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: linear-gradient(135deg, var(--gold-accent), #b8860b);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .producto-body {
+    padding: 18px 18px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .producto-body h3 {
+    font-family: var(--font-title);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--forest-dark);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+  }
+  .producto-body p {
+    font-size: 0.80rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 12px;
+    flex: 1;
+  }
+  .producto-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-card);
+  }
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.74rem;
+    color: var(--text-muted);
+  }
+  .meta-row i {
+    color: var(--wood-warm);
+    width: 14px;
+    text-align: center;
+  }
+  .btn-cotizar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 14px;
+    padding: 9px 16px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    width: 100%;
+  }
+  .btn-cotizar:hover { opacity: 0.9; color: #fff; }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    position: relative;
+    z-index: 10;
+  }
+  .empty-state i {
+    font-size: 3rem;
+    color: var(--wood-warm);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .empty-state h3 {
+    font-family: var(--font-title);
+    font-size: 1.2rem;
+    color: var(--forest-dark);
+    margin-bottom: 8px;
+  }
+  .empty-state p { color: var(--text-muted); font-size: 0.9rem; }
+
+  @media(max-width:900px) { .productos-grid { grid-template-columns: 1fr 1fr; } }
+  @media(max-width:580px) { .productos-grid { grid-template-columns: 1fr; } .filter-inner { gap: 6px; } }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO PRODUCTOS -->
+<section class="productos-hero">
+  <div class="container">
+    <div class="productos-hero-card reveal">
+      <span class="section-tag"><i class="fa-solid fa-box-open"></i> &nbsp;Catálogo Completo</span>
+      <h1 class="section-title">Nuestros Productos</h1>
+      <p class="section-desc">Tableros alistonados y finger-joint en maderas nobles seleccionadas, organizados por categoría. Todos disponibles a medida y con despacho a todo Chile.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BARRA DE FILTROS -->
+<div class="filter-bar">
+  <div class="container">
+    <div class="filter-inner">
+      <span class="filter-label"><i class="fa-solid fa-filter"></i> Filtrar:</span>
+      <a href="{% url 'productos' %}" class="filter-btn {% if not cat_activa %}active{% endif %}">
+        <i class="fa-solid fa-th-large"></i> Todos
+      </a>
+      {% for cat in todas_categorias %}
+        <a href="{% url 'productos' %}?cat={{ cat.pk }}" class="filter-btn {% if cat_activa == cat.pk %}active{% endif %}">
+          <i class="fa-solid {{ cat.icono }}"></i> {{ cat.nombre }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTOS POR CATEGORÍA -->
+<section class="productos-section">
+  <div class="container">
+    {% if categorias_con_productos %}
+      {% for categoria, productos in categorias_con_productos %}
+        <div class="categoria-bloque" id="cat-{{ categoria.pk }}">
+          <div class="categoria-header reveal">
+            <div class="categoria-icon">
+              <i class="fa-solid {{ categoria.icono }}"></i>
+            </div>
+            <div class="categoria-info">
+              <h2>{{ categoria.nombre }}</h2>
+              {% if categoria.descripcion %}
+                <p>{{ categoria.descripcion }}</p>
+              {% endif %}
+            </div>
+          </div>
+          <div class="productos-grid">
+            {% for prod in productos %}
+              <div class="producto-card reveal delay-{{ forloop.counter }}">
+                <div class="producto-img-wrap">
+                  {% if prod.get_imagen_url %}
+                    <img src="{{ prod.get_imagen_url }}" alt="{{ prod.nombre }}" loading="lazy">
+                  {% else %}
+                    <div class="no-imagen">
+                      <i class="fa-solid fa-image"></i>
+                      <span>Sin imagen</span>
+                    </div>
+                  {% endif %}
+                  {% if prod.destacado %}
+                    <span class="badge-destacado"><i class="fa-solid fa-star"></i> Destacado</span>
+                  {% endif %}
+                </div>
+                <div class="producto-body">
+                  <h3>{{ prod.nombre }}</h3>
+                  <p>{{ prod.descripcion|truncatewords:22 }}</p>
+                  <div class="producto-meta">
+                    {% if prod.especies %}
+                      <div class="meta-row">
+                        <i class="fa-solid fa-tree"></i>
+                        <span>{{ prod.especies }}</span>
+                      </div>
+                    {% endif %}
+                    {% if prod.espesores %}
+                      <div class="meta-row">
+                        <i class="fa-solid fa-ruler"></i>
+                        <span>{{ prod.espesores }}</span>
+                      </div>
+                    {% endif %}
+                    {% if prod.precio %}
+                      <div class="meta-row">
+                        <i class="fa-solid fa-tag"></i>
+                        <span>Desde $\{{ prod.precio|floatformat:"0" }} CLP</span>
+                      </div>
+                    {% endif %}
+                  </div>
+                  <a href="https://wa.me/56996422795?text={{ 'Hola CW Panel, me interesa el producto: '|urlencode }}{{ prod.nombre|urlencode }}" target="_blank" class="btn-cotizar">
+                    <i class="fa-brands fa-whatsapp"></i> Cotizar por WhatsApp
+                  </a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty-state reveal">
+        <i class="fa-solid fa-box-open"></i>
+        <h3>No hay productos disponibles</h3>
+        <p>Próximamente agregaremos nuestro catálogo completo. Contáctanos directamente por WhatsApp para consultas.</p>
+        <a href="https://wa.me/56996422795" target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:12px 24px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border-radius:10px;font-weight:700;text-decoration:none;">
+          <i class="fa-brands fa-whatsapp"></i> Contactar por WhatsApp
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

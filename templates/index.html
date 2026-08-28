@@ -1,0 +1,474 @@
+{% extends "base.html" %}
+{% block title %}CW Panel Ltda. | Tableros de Mueblería & Maderas Nobles Seleccionadas{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* ====== HERO ====== */
+  .hero-section { padding:55px 0 45px; text-align:center; position:relative; z-index:10; }
+  .hero-glass-card {
+    background:rgba(255,255,255,0.82); backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,0.9);
+    box-shadow:0 10px 30px rgba(11,34,21,0.05);
+    border-radius:20px; padding:36px 28px 28px;
+    max-width:900px; margin:0 auto;
+  }
+  .hero-badge-pill {
+    display:inline-flex; align-items:center; gap:7px;
+    background:rgba(245,239,229,0.95); border:1px solid var(--border-subtle);
+    padding:5px 16px; border-radius:20px; font-size:0.74rem;
+    font-weight:700; color:var(--forest-deep); letter-spacing:1.5px;
+    text-transform:uppercase; margin-bottom:14px;
+  }
+  .hero-badge-pill i { color:var(--wood-warm); }
+  .hero-tagline { font-family:var(--font-title); letter-spacing:3.5px; font-size:1rem; color:var(--wood-rich); font-weight:600; margin-bottom:4px; }
+  .hero-title { font-family:var(--font-title); font-size:clamp(2.2rem,4vw,3.5rem); line-height:1.1; color:var(--forest-dark); font-weight:800; letter-spacing:0.8px; margin-bottom:8px; }
+  .hero-subtitle { font-family:var(--font-serif); font-style:italic; font-size:clamp(1.4rem,2.6vw,2.1rem); color:var(--wood-warm); margin-bottom:16px; display:flex; align-items:center; justify-content:center; gap:10px; }
+  .hero-desc { font-size:1.05rem; color:var(--text-body); max-width:720px; margin:0 auto 20px; line-height:1.6; }
+  .hero-specs-strip { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; }
+  .spec-pill { background:var(--bg-card-solid); border:1px solid var(--border-subtle); padding:6px 12px; border-radius:6px; font-size:0.76rem; font-weight:600; color:var(--forest-deep); display:flex; align-items:center; gap:6px; }
+  .spec-pill i { color:var(--wood-warm); }
+  .hero-features-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; text-align:left; margin-top:24px; }
+  .feature-card { background:rgba(255,255,255,0.88); border:1px solid var(--border-card); border-radius:12px; padding:20px 16px; box-shadow:var(--shadow-sm); transition:transform 0.2s ease; }
+  .feature-card:hover { transform:translateY(-2px); border-color:var(--wood-warm); }
+  .feature-icon-box { width:40px; height:40px; border-radius:8px; background:linear-gradient(135deg,var(--forest-dark),var(--forest-deep)); color:var(--wood-light); display:flex; align-items:center; justify-content:center; font-size:1.1rem; margin-bottom:12px; }
+  .feature-card h4 { font-family:var(--font-title); font-size:0.86rem; font-weight:700; color:var(--forest-dark); margin-bottom:4px; }
+  .feature-card p { font-size:0.78rem; color:var(--text-muted); line-height:1.4; }
+
+  /* ====== BANNER EDITORIAL ====== */
+  .quote-banner-section { padding:30px 0 50px; position:relative; z-index:10; }
+  .editorial-card { background:linear-gradient(135deg,#183e29,#0e2719); color:var(--text-light); border-radius:16px; padding:38px 30px; text-align:center; border:1px solid rgba(212,175,55,0.3); box-shadow:var(--shadow-md); }
+  .editorial-card h3 { font-family:var(--font-serif); font-style:italic; font-size:clamp(1.35rem,2.3vw,1.9rem); font-weight:600; color:var(--wood-light); margin-bottom:8px; max-width:800px; margin-left:auto; margin-right:auto; line-height:1.35; }
+  .editorial-card p { font-size:0.85rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-cream); font-weight:500; }
+
+  /* ====== ESPECIES ====== */
+  .species-section { padding:20px 0 65px; position:relative; z-index:10; }
+  .section-header { text-align:center; margin-bottom:28px; }
+  .section-tag { font-size:0.76rem; text-transform:uppercase; letter-spacing:2.5px; font-weight:700; color:var(--wood-warm); display:block; margin-bottom:6px; }
+  .section-title { font-family:var(--font-title); font-size:clamp(1.5rem,2.5vw,2.2rem); color:var(--forest-dark); font-weight:800; letter-spacing:0.5px; }
+  .section-desc { font-size:0.95rem; color:var(--text-muted); max-width:600px; margin:8px auto 0; }
+  .species-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .species-card {
+    background:rgba(255,255,255,0.9); border:1px solid var(--border-card);
+    border-radius:14px; overflow:hidden; box-shadow:var(--shadow-sm);
+    transition:transform 0.25s ease, box-shadow 0.25s ease; cursor:default;
+  }
+  .species-card:hover { transform:translateY(-3px); box-shadow:0 14px 32px rgba(11,34,21,0.09); }
+  .species-card-header { padding:22px 20px 14px; display:flex; align-items:center; gap:14px; border-bottom:1px solid var(--border-card); }
+  .species-icon-ring { width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,var(--forest-dark),var(--forest-deep)); color:var(--wood-light); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+  .species-card-header h3 { font-family:var(--font-title); font-size:0.95rem; font-weight:700; color:var(--forest-dark); margin-bottom:2px; }
+  .species-card-header span { font-size:0.72rem; color:var(--text-muted); letter-spacing:0.5px; }
+  .species-card-body { padding:14px 20px 20px; }
+  .species-desc { font-size:0.82rem; color:var(--text-body); line-height:1.5; margin-bottom:12px; }
+  .species-chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .chip { background:var(--forest-soft); border:1px solid rgba(31,85,55,0.15); color:var(--forest-deep); padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:600; }
+
+  /* ====== GALERÍA CARRUSEL ====== */
+  .gallery-section { padding:20px 0 70px; position:relative; z-index:10; }
+  .carousel-wrapper { position:relative; border-radius:18px; overflow:hidden; box-shadow:0 16px 40px rgba(11,34,21,0.1); height:440px; }
+  .carousel-track { display:flex; height:100%; transition:transform 0.6s cubic-bezier(0.4,0,0.2,1); will-change:transform; }
+  .carousel-slide { min-width:100%; height:100%; position:relative; flex-shrink:0; }
+  .slide-bg-img { width:100%; height:100%; object-fit:cover; display:block; }
+  .slide-overlay-card { position:absolute; bottom:22px; left:22px; right:22px; background:rgba(255,255,255,0.93); backdrop-filter:blur(6px); border-radius:12px; padding:20px 22px; box-shadow:0 6px 20px rgba(11,34,21,0.08); }
+  .slide-category-tag { font-size:0.7rem; letter-spacing:2px; text-transform:uppercase; font-weight:700; color:var(--wood-main); display:block; margin-bottom:4px; }
+  .slide-title { font-family:var(--font-title); font-size:1.05rem; color:var(--forest-dark); margin-bottom:6px; }
+  .slide-desc { font-size:0.82rem; color:var(--text-muted); margin-bottom:10px; }
+  .slide-specs-chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .spec-chip { background:var(--forest-soft); border:1px solid rgba(31,85,55,0.12); color:var(--forest-deep); padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:600; display:flex; align-items:center; gap:5px; }
+  .carousel-nav-btn {
+    position:absolute; top:50%; transform:translateY(-50%);
+    background:rgba(255,255,255,0.92); border:none; border-radius:50%;
+    width:42px; height:42px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,0.1); font-size:0.85rem;
+    color:var(--forest-dark); transition:background 0.2s ease; z-index:20;
+  }
+  .carousel-nav-btn:hover { background:#fff; }
+  .carousel-nav-btn.prev { left:14px; }
+  .carousel-nav-btn.next { right:14px; }
+  .carousel-bottom-bar { position:absolute; bottom:100px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:20; }
+  .carousel-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.5); cursor:pointer; transition:background 0.2s ease, transform 0.2s ease; }
+  .carousel-dot.active { background:#fff; transform:scale(1.25); }
+
+  /* ====== SOCIAL & COTIZADOR ====== */
+  .social-contact-section { padding:20px 0 65px; position:relative; z-index:10; }
+  .social-cards-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:28px; }
+  .social-box-card { background:rgba(255,255,255,0.9); border:1px solid var(--border-card); border-radius:14px; padding:22px 18px; text-decoration:none; color:inherit; text-align:center; transition:transform 0.2s ease, box-shadow 0.2s ease; }
+  .social-box-card:hover { transform:translateY(-3px); box-shadow:0 12px 28px rgba(11,34,21,0.08); }
+  .social-avatar-icon { width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin:0 auto 12px; }
+  .social-box-card.whatsapp .social-avatar-icon { background:rgba(37,211,102,0.12); color:#25D366; }
+  .social-box-card.instagram .social-avatar-icon { background:rgba(225,48,108,0.1); color:#E1306C; }
+  .social-box-card.facebook .social-avatar-icon { background:rgba(24,119,242,0.1); color:#1877F2; }
+  .social-box-card.email .social-avatar-icon { background:rgba(31,85,55,0.1); color:var(--forest-main); }
+  .social-box-card h4 { font-family:var(--font-title); font-size:0.9rem; color:var(--forest-dark); margin-bottom:6px; }
+  .social-box-card p { font-size:0.78rem; color:var(--text-muted); margin-bottom:12px; }
+  .social-badge-cta { display:inline-flex; align-items:center; gap:5px; font-size:0.74rem; font-weight:700; color:var(--forest-main); letter-spacing:0.5px; }
+  .quote-calculator-card { background:rgba(255,255,255,0.9); border:1px solid var(--border-card); border-radius:16px; padding:28px 26px; box-shadow:var(--shadow-sm); }
+  .quote-calc-header h3 { font-family:var(--font-title); font-size:1.05rem; color:var(--forest-dark); margin-bottom:6px; }
+  .quote-calc-header p { font-size:0.86rem; color:var(--text-muted); margin-bottom:20px; }
+  .calc-form-grid { display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:14px; align-items:end; }
+  .calc-field-group label { display:block; font-size:0.76rem; font-weight:700; color:var(--forest-deep); margin-bottom:6px; letter-spacing:0.5px; text-transform:uppercase; }
+  .calc-select, .calc-input { width:100%; padding:10px 12px; border:1px solid var(--border-card); border-radius:8px; font-size:0.84rem; font-family:var(--font-body); color:var(--text-body); background:#fff; outline:none; transition:border-color 0.2s; }
+  .calc-select:focus, .calc-input:focus { border-color:var(--forest-light); }
+  .btn-send-whatsapp-quote { display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#25D366,#128C7E); color:#fff; border:none; padding:11px 22px; border-radius:8px; font-size:0.86rem; font-weight:700; cursor:pointer; white-space:nowrap; transition:opacity 0.2s; }
+  .btn-send-whatsapp-quote:hover { opacity:0.9; }
+
+  /* ====== CALIDAD ====== */
+  .quality-pillars-section { background:linear-gradient(135deg,#0e2719,#0b2215); padding:40px 0; position:relative; z-index:10; }
+  .pillars-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  .pillar-box { display:flex; align-items:flex-start; gap:14px; }
+  .pillar-icon-wrap { width:42px; height:42px; border-radius:8px; background:rgba(212,175,55,0.15); border:1px solid rgba(212,175,55,0.3); color:var(--gold-accent); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+  .pillar-content h5 { font-family:var(--font-title); font-size:0.88rem; color:var(--wood-light); margin-bottom:4px; }
+  .pillar-content p { font-size:0.78rem; color:rgba(255,255,255,0.5); line-height:1.4; }
+
+  @media(max-width:900px) {
+    .hero-features-grid { grid-template-columns:repeat(2,1fr); }
+    .species-grid { grid-template-columns:1fr 1fr; }
+    .social-cards-grid { grid-template-columns:1fr 1fr; }
+    .pillars-grid { grid-template-columns:1fr 1fr; }
+    .calc-form-grid { grid-template-columns:1fr 1fr; }
+  }
+  @media(max-width:600px) {
+    .hero-features-grid, .species-grid, .pillars-grid { grid-template-columns:1fr; }
+    .social-cards-grid { grid-template-columns:1fr 1fr; }
+    .calc-form-grid { grid-template-columns:1fr; }
+    .carousel-wrapper { height:320px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero-section" id="nosotros">
+  <div class="container">
+    <div class="hero-glass-card reveal">
+      <div class="hero-badge-pill"><i class="fa-solid fa-seedling"></i> Maderas Nobles · Calidad de Exportación</div>
+      <p class="hero-tagline">Fabricación Artesanal & Industrial</p>
+      <h1 class="hero-title">CW Panel Ltda.</h1>
+      <p class="hero-subtitle">
+        <i class="fa-solid fa-leaf" style="color:var(--forest-light);font-size:1.2rem;"></i>
+        Tableros Alistonados & Finger-Joint
+      </p>
+      <p class="hero-desc">Especialistas en la fabricación de tableros de madera noble para mueblería, cocinas, mesones y arquitectura. Secado en cámara, calibrado fino y despachos a todo Chile desde la Región de Los Ríos.</p>
+      <div class="hero-specs-strip">
+        <span class="spec-pill"><i class="fa-solid fa-tree"></i> Pino Oregón</span>
+        <span class="spec-pill"><i class="fa-solid fa-seedling"></i> Acacia Negra</span>
+        <span class="spec-pill"><i class="fa-solid fa-leaf"></i> Roble Seleccionado</span>
+        <span class="spec-pill"><i class="fa-solid fa-circle-check"></i> Grado Exportación</span>
+        <span class="spec-pill"><i class="fa-solid fa-truck"></i> Despacho a todo Chile</span>
+      </div>
+      <div class="hero-features-grid">
+        <div class="feature-card reveal delay-1">
+          <div class="feature-icon-box"><i class="fa-solid fa-temperature-arrow-up"></i></div>
+          <h4>Secado en Cámara</h4>
+          <p>Control higrométrico riguroso para máxima estabilidad dimensional.</p>
+        </div>
+        <div class="feature-card reveal delay-2">
+          <div class="feature-icon-box"><i class="fa-solid fa-ruler-combined"></i></div>
+          <h4>Calibrado Fino</h4>
+          <p>Lijado grano 120-150 listo para cualquier acabado superficial.</p>
+        </div>
+        <div class="feature-card reveal delay-3">
+          <div class="feature-icon-box"><i class="fa-solid fa-layer-group"></i></div>
+          <h4>Finger-Joint</h4>
+          <p>Unión dentada de alta resistencia, libre de nudos sueltos.</p>
+        </div>
+        <div class="feature-card reveal delay-4">
+          <div class="feature-icon-box"><i class="fa-solid fa-earth-americas"></i></div>
+          <h4>Sustentable</h4>
+          <p>Compromiso con la reforestación y el manejo responsable del bosque.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BANNER EDITORIAL -->
+<section class="quote-banner-section">
+  <div class="container">
+    <div class="editorial-card reveal">
+      <h3>"La madera no es solo un material — es el alma viva de cada proyecto que construyes."</h3>
+      <p>CW Panel Ltda. · San José de La Mariquina · Región de Los Ríos · Chile</p>
+    </div>
+  </div>
+</section>
+
+<!-- ESPECIES -->
+<section class="species-section" id="especies">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Muestrario Botánico</span>
+      <h2 class="section-title">Nuestras Especies de Madera</h2>
+      <p class="section-desc">Selección rigurosa de maderas nobles con certificación de origen y secado controlado.</p>
+    </div>
+    <div class="species-grid">
+      <div class="species-card reveal delay-1">
+        <div class="species-card-header">
+          <div class="species-icon-ring"><i class="fa-solid fa-tree"></i></div>
+          <div>
+            <h3>Pino Oregón</h3>
+            <span>Douglas Fir · Pseudotsuga menziesii</span>
+          </div>
+        </div>
+        <div class="species-card-body">
+          <p class="species-desc">Madera de coníferas de alta resistencia y veta uniforme. Ideal para cubiertas de cocina, escaleras y mueblería de alto volumen.</p>
+          <div class="species-chips">
+            <span class="chip">Densidad media</span>
+            <span class="chip">Alta estabilidad</span>
+            <span class="chip">Fácil de trabajar</span>
+          </div>
+        </div>
+      </div>
+      <div class="species-card reveal delay-2">
+        <div class="species-card-header">
+          <div class="species-icon-ring"><i class="fa-solid fa-seedling"></i></div>
+          <div>
+            <h3>Acacia Negra</h3>
+            <span>Melanoxylon · Blackwood</span>
+          </div>
+        </div>
+        <div class="species-card-body">
+          <p class="species-desc">Madera de dureza excepcional con veta espectacular. Preferida para mesones de cocina y piezas de alta gama con larga vida útil.</p>
+          <div class="species-chips">
+            <span class="chip">Alta dureza</span>
+            <span class="chip">Veta única</span>
+            <span class="chip">Premium</span>
+          </div>
+        </div>
+      </div>
+      <div class="species-card reveal delay-3">
+        <div class="species-card-header">
+          <div class="species-icon-ring"><i class="fa-solid fa-leaf"></i></div>
+          <div>
+            <h3>Roble Seleccionado</h3>
+            <span>Quercus · Oak Grade A</span>
+          </div>
+        </div>
+        <div class="species-card-body">
+          <p class="species-desc">Madera noble de gran presencia visual. Perfecta para escritorios ejecutivos, salas de reunión y mobiliario arquitectónico de lujo.</p>
+          <div class="species-chips">
+            <span class="chip">Grado A</span>
+            <span class="chip">Sin defectos</span>
+            <span class="chip">Acabado natural</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERÍA CARRUSEL -->
+<section class="gallery-section" id="galeria">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Galería de Proyectos</span>
+      <h2 class="section-title">Nuestros Trabajos</h2>
+      <p class="section-desc">Proyectos realizados con nuestros tableros en todo Chile.</p>
+    </div>
+    <div class="carousel-wrapper reveal">
+      <div class="carousel-track" id="carouselTrack">
+        <div class="carousel-slide">
+          <img class="slide-bg-img" src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1600&q=85" alt="Cocina moderna en madera noble">
+          <div class="slide-overlay-card">
+            <div class="slide-text-info">
+              <span class="slide-category-tag">Cocinas & Mesones</span>
+              <h3 class="slide-title">Cubiertas de Cocina en Pino Oregón y Acacia</h3>
+              <p class="slide-desc">Tableros alistonados de 32 mm con acabado natural UV, bordes rectos y rebajes para lavaplatos encastrado.</p>
+              <div class="slide-specs-chips">
+                <span class="spec-chip"><i class="fa-solid fa-ruler"></i> Espesor: 32 mm</span>
+                <span class="spec-chip"><i class="fa-solid fa-tree"></i> Pino Oregón / Acacia</span>
+                <span class="spec-chip"><i class="fa-solid fa-wand-magic-sparkles"></i> Acabado Natural UV</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <img class="slide-bg-img" src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1600&q=85" alt="Mesa comedor madera maciza">
+          <div class="slide-overlay-card">
+            <div class="slide-text-info">
+              <span class="slide-category-tag">Mesas & Living</span>
+              <h3 class="slide-title">Mesas de Comedor y Centro en Madera Maciza</h3>
+              <p class="slide-desc">Tableros macizos para mesas de comedor de 8 personas, bordes naturales y acabado cera de carnauba.</p>
+              <div class="slide-specs-chips">
+                <span class="spec-chip"><i class="fa-solid fa-ruler"></i> Espesor: 40 mm</span>
+                <span class="spec-chip"><i class="fa-solid fa-tree"></i> Acacia Negra</span>
+                <span class="spec-chip"><i class="fa-solid fa-wand-magic-sparkles"></i> Cera Natural</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <img class="slide-bg-img" src="https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=1600&q=85" alt="Escritorio corporativo de madera sólida">
+          <div class="slide-overlay-card">
+            <div class="slide-text-info">
+              <span class="slide-category-tag">Espacios Corporativos</span>
+              <h3 class="slide-title">Escritorios Ejecutivos y Salas de Reunión</h3>
+              <p class="slide-desc">Ambientes de trabajo que transmiten serenidad y sofisticación con tableros calibrados de alta durabilidad.</p>
+              <div class="slide-specs-chips">
+                <span class="spec-chip"><i class="fa-solid fa-ruler"></i> Espesor: 25 mm</span>
+                <span class="spec-chip"><i class="fa-solid fa-tree"></i> Roble Seleccionado</span>
+                <span class="spec-chip"><i class="fa-solid fa-wand-magic-sparkles"></i> Acabado Natural UV</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <img class="slide-bg-img" src="https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=1600&q=85" alt="Paneles acústicos en madera noble">
+          <div class="slide-overlay-card">
+            <div class="slide-text-info">
+              <span class="slide-category-tag">Paneles & Muros</span>
+              <h3 class="slide-title">Mobiliario a Medida & Revestimiento Acústico</h3>
+              <p class="slide-desc">Lamas continuas y tableros finger-joint para integración arquitectónica en departamentos y casas de campo.</p>
+              <div class="slide-specs-chips">
+                <span class="spec-chip"><i class="fa-solid fa-ruler"></i> Espesor: 18 mm</span>
+                <span class="spec-chip"><i class="fa-solid fa-tree"></i> Pino Oregón & Acacia</span>
+                <span class="spec-chip"><i class="fa-solid fa-wand-magic-sparkles"></i> Sellador Ecológico</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-nav-btn prev" id="prevSlideBtn" aria-label="Slide anterior"><i class="fa-solid fa-chevron-left"></i></button>
+      <button class="carousel-nav-btn next" id="nextSlideBtn" aria-label="Slide siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+      <div class="carousel-bottom-bar">
+        <span class="carousel-dot active" data-index="0"></span>
+        <span class="carousel-dot" data-index="1"></span>
+        <span class="carousel-dot" data-index="2"></span>
+        <span class="carousel-dot" data-index="3"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL & COTIZADOR -->
+<section class="social-contact-section" id="redes">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Conexión Directa</span>
+      <h2 class="section-title">Nuestras Redes Sociales & Contacto</h2>
+    </div>
+    <div class="social-cards-grid">
+      <a href="https://wa.me/56996422795?text=Hola%20CW%20Panel%2C%20quisiera%20hacer%20una%20consulta%20comercial" target="_blank" class="social-box-card whatsapp reveal delay-1">
+        <div class="social-avatar-icon"><i class="fa-brands fa-whatsapp"></i></div>
+        <h4>WhatsApp Comercial</h4>
+        <p>Atención directa, asesoría técnica y cotizaciones instantáneas.</p>
+        <span class="social-badge-cta">Chatear Ahora <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <a href="https://instagram.com" target="_blank" class="social-box-card instagram reveal delay-2">
+        <div class="social-avatar-icon"><i class="fa-brands fa-instagram"></i></div>
+        <h4>Instagram Oficial</h4>
+        <p>Fotos de stock, nuevos lotes de madera y proyectos terminados.</p>
+        <span class="social-badge-cta">Seguir Galería <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <a href="https://facebook.com" target="_blank" class="social-box-card facebook reveal delay-3">
+        <div class="social-avatar-icon"><i class="fa-brands fa-facebook-f"></i></div>
+        <h4>Facebook Página</h4>
+        <p>Catálogos actualizados, novedades de planta y comunidad de carpinteros.</p>
+        <span class="social-badge-cta">Ver Publicaciones <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <div class="social-box-card email reveal delay-4" id="emailCard" style="cursor:pointer;">
+        <div class="social-avatar-icon"><i class="fa-solid fa-envelope"></i></div>
+        <h4>Correo Electrónico</h4>
+        <p>contacto@cwpanel.cl</p>
+        <span class="social-badge-cta" id="copyEmailText">Copiar Correo <i class="fa-solid fa-copy"></i></span>
+      </div>
+    </div>
+    <div class="quote-calculator-card reveal delay-2">
+      <div class="quote-calc-header">
+        <h3><i class="fa-solid fa-calculator" style="color:var(--wood-warm);margin-right:8px;"></i> Cotizador Rápido en 1 Clic</h3>
+        <p>Selecciona las características de tu proyecto y recibe tu cotización por WhatsApp.</p>
+      </div>
+      <form class="calc-form-grid" id="quickQuoteForm">
+        <div class="calc-field-group">
+          <label for="quoteSpecies">Especie de Madera:</label>
+          <select id="quoteSpecies" class="calc-select">
+            <option value="Pino Oregón">Pino Oregón (Douglas Fir)</option>
+            <option value="Acacia Negra">Acacia Negra (Melanoxylon)</option>
+            <option value="Roble Seleccionado">Roble Seleccionado</option>
+            <option value="Eucalipto Glóbulos">Eucalipto Glóbulos</option>
+          </select>
+        </div>
+        <div class="calc-field-group">
+          <label for="quoteThickness">Espesor del Tablero:</label>
+          <select id="quoteThickness" class="calc-select">
+            <option value="18 mm">18 mm (Paneles / Mueblería liviana)</option>
+            <option value="25 mm">25 mm (Escritorios / Puertas)</option>
+            <option value="32 mm" selected>32 mm (Cubiertas de Cocina)</option>
+            <option value="40 mm">40 mm (Mesas macizas)</option>
+          </select>
+        </div>
+        <div class="calc-field-group">
+          <label for="quoteUse">Destino / Uso:</label>
+          <input type="text" id="quoteUse" class="calc-input" placeholder="Ej: Cubierta de cocina 2.50m x 0.60m" value="Cubierta de cocina / Mesa">
+        </div>
+        <button type="submit" class="btn-send-whatsapp-quote">
+          <i class="fa-brands fa-whatsapp"></i> Solicitar por WhatsApp
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CALIDAD -->
+<section class="quality-pillars-section" id="calidad">
+  <div class="container">
+    <div class="pillars-grid">
+      <div class="pillar-box reveal delay-1">
+        <div class="pillar-icon-wrap"><i class="fa-solid fa-layer-group"></i></div>
+        <div class="pillar-content"><h5>Madera Seleccionada</h5><p>Clasificación visual libre de defectos críticos y nudos sueltos.</p></div>
+      </div>
+      <div class="pillar-box reveal delay-2">
+        <div class="pillar-icon-wrap"><i class="fa-solid fa-temperature-arrow-up"></i></div>
+        <div class="pillar-content"><h5>Secado en Cámara</h5><p>Control higrométrico riguroso para asegurar estabilidad dimensional.</p></div>
+      </div>
+      <div class="pillar-box reveal delay-3">
+        <div class="pillar-icon-wrap"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <div class="pillar-content"><h5>Terminación Calibrada</h5><p>Lijado fino de grano 120-150 listo para aplicar cualquier acabado.</p></div>
+      </div>
+      <div class="pillar-box reveal delay-4">
+        <div class="pillar-icon-wrap"><i class="fa-solid fa-earth-americas"></i></div>
+        <div class="pillar-content"><h5>Manejo Sustentable</h5><p>Compromiso con la reforestación y el cuidado del bosque nativo.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // ── CARRUSEL ──
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.carousel-slide');
+  const dots = document.querySelectorAll('.carousel-dot');
+  const track = document.getElementById('carouselTrack');
+
+  function goToSlide(n) {
+    currentSlide = (n + slides.length) % slides.length;
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    dots.forEach((d,i) => d.classList.toggle('active', i === currentSlide));
+  }
+
+  document.getElementById('prevSlideBtn').addEventListener('click', () => goToSlide(currentSlide - 1));
+  document.getElementById('nextSlideBtn').addEventListener('click', () => goToSlide(currentSlide + 1));
+  dots.forEach(d => d.addEventListener('click', () => goToSlide(parseInt(d.dataset.index))));
+  setInterval(() => goToSlide(currentSlide + 1), 5000);
+
+  // ── EMAIL COPY ──
+  document.getElementById('emailCard').addEventListener('click', () => {
+    navigator.clipboard.writeText('contacto@cwpanel.cl').then(() => {
+      showToast('Correo copiado al portapapeles');
+    });
+  });
+
+  // ── COTIZADOR WHATSAPP ──
+  document.getElementById('quickQuoteForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const sp = document.getElementById('quoteSpecies').value;
+    const th = document.getElementById('quoteThickness').value;
+    const us = document.getElementById('quoteUse').value;
+    const msg = `Hola CW Panel, quisiera cotizar:\n• Especie: ${sp}\n• Espesor: ${th}\n• Uso/Destino: ${us}`;
+    window.open(`https://wa.me/56996422795?text=${encodeURIComponent(msg)}`, '_blank');
+  });
+</script>
+{% endblock %}

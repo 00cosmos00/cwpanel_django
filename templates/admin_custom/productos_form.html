@@ -1,0 +1,157 @@
+{% extends "admin_custom/base_admin.html" %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block page_title %}{{ titulo }}{% endblock %}
+{% block active_productos %}active{% endblock %}
+
+{% block content %}
+<div style="margin-bottom:16px;">
+  <a href="{% url 'productos_list' %}" class="btn btn-secondary btn-sm">
+    <i class="fa-solid fa-arrow-left"></i> Volver a Productos
+  </a>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div style="display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start;">
+
+    <!-- Columna principal -->
+    <div style="display:flex;flex-direction:column;gap:20px;">
+
+      <!-- Info básica -->
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-circle-info" style="color:var(--forest-main);margin-right:8px;"></i>Información Básica</h2>
+        </div>
+        <div class="card-body">
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label for="{{ form.nombre.id_for_label }}">{{ form.nombre.label }}</label>
+              {{ form.nombre }}
+              {% if form.nombre.errors %}<p class="form-error">{{ form.nombre.errors.0 }}</p>{% endif %}
+            </div>
+            <div class="form-group">
+              <label for="{{ form.categoria.id_for_label }}">{{ form.categoria.label }}</label>
+              {{ form.categoria }}
+              {% if form.categoria.errors %}<p class="form-error">{{ form.categoria.errors.0 }}</p>{% endif %}
+            </div>
+            <div class="form-group">
+              <label for="{{ form.precio.id_for_label }}">{{ form.precio.label }}</label>
+              {{ form.precio }}
+              <p class="form-help">Opcional. Se mostrará como precio referencial.</p>
+              {% if form.precio.errors %}<p class="form-error">{{ form.precio.errors.0 }}</p>{% endif %}
+            </div>
+            <div class="form-group full-width">
+              <label for="{{ form.descripcion.id_for_label }}">{{ form.descripcion.label }}</label>
+              {{ form.descripcion }}
+              {% if form.descripcion.errors %}<p class="form-error">{{ form.descripcion.errors.0 }}</p>{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Especificaciones técnicas -->
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-ruler" style="color:var(--forest-main);margin-right:8px;"></i>Especificaciones Técnicas</h2>
+        </div>
+        <div class="card-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="{{ form.especies.id_for_label }}">{{ form.especies.label }}</label>
+              {{ form.especies }}
+              <p class="form-help">Ej: Pino Oregón, Acacia Negra</p>
+              {% if form.especies.errors %}<p class="form-error">{{ form.especies.errors.0 }}</p>{% endif %}
+            </div>
+            <div class="form-group">
+              <label for="{{ form.espesores.id_for_label }}">{{ form.espesores.label }}</label>
+              {{ form.espesores }}
+              <p class="form-help">Ej: 18mm, 25mm, 32mm, 40mm</p>
+              {% if form.espesores.errors %}<p class="form-error">{{ form.espesores.errors.0 }}</p>{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Columna lateral -->
+    <div style="display:flex;flex-direction:column;gap:20px;">
+
+      <!-- Imagen -->
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-image" style="color:var(--forest-main);margin-right:8px;"></i>Imagen</h2>
+        </div>
+        <div class="card-body">
+          {% if obj and obj.get_imagen_url %}
+            <div style="margin-bottom:14px;">
+              <img src="{{ obj.get_imagen_url }}" alt="{{ obj.nombre }}"
+                   style="width:100%;border-radius:10px;object-fit:cover;max-height:180px;border:1px solid var(--border);">
+              <p style="font-size:0.72rem;color:var(--text-m);margin-top:6px;">Imagen actual</p>
+            </div>
+          {% endif %}
+
+          <div class="form-group" style="margin-bottom:14px;">
+            <label for="{{ form.imagen.id_for_label }}">Subir imagen</label>
+            {{ form.imagen }}
+            <p class="form-help">JPG, PNG o WebP. Se almacena en el servidor.</p>
+          </div>
+
+          <div style="text-align:center;padding:8px 0;color:var(--text-m);font-size:0.75rem;font-weight:600;">— O —</div>
+
+          <div class="form-group">
+            <label for="{{ form.imagen_url.id_for_label }}">{{ form.imagen_url.label }}</label>
+            {{ form.imagen_url }}
+            <p class="form-help">URL de Unsplash, Cloudinary u otro proveedor externo.</p>
+            {% if form.imagen_url.errors %}<p class="form-error">{{ form.imagen_url.errors.0 }}</p>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Opciones -->
+      <div class="card">
+        <div class="card-header">
+          <h2><i class="fa-solid fa-sliders" style="color:var(--forest-main);margin-right:8px;"></i>Opciones</h2>
+        </div>
+        <div class="card-body">
+          <div class="form-group" style="margin-bottom:16px;">
+            <label for="{{ form.orden.id_for_label }}">{{ form.orden.label }}</label>
+            {{ form.orden }}
+            <p class="form-help">Menor número = aparece primero</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="form-check-wrap">
+              {{ form.activo }}
+              <label class="form-check-label" for="{{ form.activo.id_for_label }}">Producto activo (visible en el sitio)</label>
+            </div>
+            <div class="form-check-wrap">
+              {{ form.destacado }}
+              <label class="form-check-label" for="{{ form.destacado.id_for_label }}">Producto destacado (⭐)</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="card">
+        <div class="card-body">
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+              <i class="fa-solid fa-floppy-disk"></i> Guardar Producto
+            </button>
+            <a href="{% url 'productos_list' %}" class="btn btn-secondary" style="width:100%;justify-content:center;">
+              Cancelar
+            </a>
+            {% if obj %}
+              <a href="{% url 'producto_delete' obj.pk %}" class="btn btn-danger" style="width:100%;justify-content:center;">
+                <i class="fa-solid fa-trash"></i> Eliminar Producto
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</form>
+{% endblock %}

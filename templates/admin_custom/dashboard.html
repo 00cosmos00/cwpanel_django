@@ -1,0 +1,113 @@
+{% extends "admin_custom/base_admin.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block active_dashboard %}active{% endblock %}
+
+{% block content %}
+<!-- STAT CARDS -->
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-icon green"><i class="fa-solid fa-folder-tree"></i></div>
+    <div>
+      <div class="stat-value">{{ total_categorias }}</div>
+      <div class="stat-label">Categorías</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon blue"><i class="fa-solid fa-box"></i></div>
+    <div>
+      <div class="stat-value">{{ total_productos }}</div>
+      <div class="stat-label">Productos Totales</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon gold"><i class="fa-solid fa-star"></i></div>
+    <div>
+      <div class="stat-value">{{ productos_destacados }}</div>
+      <div class="stat-label">Destacados</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon orange"><i class="fa-solid fa-eye"></i></div>
+    <div>
+      <div class="stat-value">{{ productos_activos }}</div>
+      <div class="stat-label">Activos / Visibles</div>
+    </div>
+  </div>
+</div>
+
+<!-- ACCIONES RÁPIDAS -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;">
+  <div class="card">
+    <div class="card-header">
+      <h2><i class="fa-solid fa-folder-tree" style="color:var(--forest-main);margin-right:8px;"></i>Categorías</h2>
+      <a href="{% url 'categoria_create' %}" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nueva</a>
+    </div>
+    <div class="card-body" style="padding:16px 22px;">
+      <p style="font-size:0.84rem;color:var(--text-m);margin-bottom:14px;">Organiza tus productos en categorías para facilitar la navegación.</p>
+      <a href="{% url 'categorias_list' %}" class="btn btn-secondary btn-sm"><i class="fa-solid fa-list"></i> Ver todas</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <h2><i class="fa-solid fa-box" style="color:var(--forest-main);margin-right:8px;"></i>Productos</h2>
+      <a href="{% url 'producto_create' %}" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Nuevo</a>
+    </div>
+    <div class="card-body" style="padding:16px 22px;">
+      <p style="font-size:0.84rem;color:var(--text-m);margin-bottom:14px;">Agrega, edita o elimina productos con imágenes y especificaciones técnicas.</p>
+      <a href="{% url 'productos_list' %}" class="btn btn-secondary btn-sm"><i class="fa-solid fa-list"></i> Ver todos</a>
+    </div>
+  </div>
+</div>
+
+<!-- ÚLTIMOS PRODUCTOS -->
+<div class="card">
+  <div class="card-header">
+    <h2><i class="fa-solid fa-clock-rotate-left" style="color:var(--forest-main);margin-right:8px;"></i>Últimos Productos Agregados</h2>
+    <a href="{% url 'producto_create' %}" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Agregar</a>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Estado</th>
+          <th>Destacado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for prod in ultimos_productos %}
+        <tr>
+          <td><strong>{{ prod.nombre }}</strong></td>
+          <td>{{ prod.categoria }}</td>
+          <td>
+            {% if prod.activo %}
+              <span class="badge badge-green"><i class="fa-solid fa-circle"></i> Activo</span>
+            {% else %}
+              <span class="badge badge-red"><i class="fa-regular fa-circle"></i> Inactivo</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if prod.destacado %}
+              <span class="badge badge-gold"><i class="fa-solid fa-star"></i> Sí</span>
+            {% else %}
+              <span style="color:var(--text-m);font-size:0.78rem;">No</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="td-actions">
+              <a href="{% url 'producto_edit' prod.pk %}" class="btn btn-warning btn-sm"><i class="fa-solid fa-pencil"></i></a>
+              <a href="{% url 'producto_delete' prod.pk %}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" style="text-align:center;color:var(--text-m);padding:24px;">No hay productos aún. <a href="{% url 'producto_create' %}" style="color:var(--forest-main);">Crear el primero</a></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

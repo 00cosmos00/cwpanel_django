@@ -1,0 +1,65 @@
+{% extends "admin_custom/base_admin.html" %}
+{% block title %}Categorías{% endblock %}
+{% block page_title %}Categorías{% endblock %}
+{% block active_categorias %}active{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <h2><i class="fa-solid fa-folder-tree" style="color:var(--forest-main);margin-right:8px;"></i>Categorías</h2>
+    <a href="{% url 'categoria_create' %}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Nueva Categoría</a>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Ícono</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Productos</th>
+          <th>Orden</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cat in categorias %}
+        <tr>
+          <td style="text-align:center;">
+            <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--forest-dark),var(--forest-deep));color:var(--wood-light);display:flex;align-items:center;justify-content:center;font-size:0.9rem;">
+              <i class="fa-solid {{ cat.icono }}"></i>
+            </div>
+          </td>
+          <td><strong>{{ cat.nombre }}</strong></td>
+          <td style="max-width:260px;color:var(--text-m);font-size:0.82rem;">{{ cat.descripcion|truncatewords:12 }}</td>
+          <td>
+            <span class="badge badge-green">{{ cat.productos.count }} productos</span>
+          </td>
+          <td style="text-align:center;">{{ cat.orden }}</td>
+          <td>
+            {% if cat.activa %}
+              <span class="badge badge-green"><i class="fa-solid fa-circle"></i> Activa</span>
+            {% else %}
+              <span class="badge badge-red"><i class="fa-regular fa-circle"></i> Oculta</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="td-actions">
+              <a href="{% url 'categoria_edit' cat.pk %}" class="btn btn-warning btn-sm"><i class="fa-solid fa-pencil"></i> Editar</a>
+              <a href="{% url 'categoria_delete' cat.pk %}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" style="text-align:center;color:var(--text-m);padding:32px;">
+            No hay categorías creadas.
+            <a href="{% url 'categoria_create' %}" style="color:var(--forest-main);font-weight:600;"> Crear la primera</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

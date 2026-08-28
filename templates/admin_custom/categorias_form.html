@@ -1,0 +1,92 @@
+{% extends "admin_custom/base_admin.html" %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block page_title %}{{ titulo }}{% endblock %}
+{% block active_categorias %}active{% endblock %}
+
+{% block content %}
+<div style="margin-bottom:16px;">
+  <a href="{% url 'categorias_list' %}" class="btn btn-secondary btn-sm">
+    <i class="fa-solid fa-arrow-left"></i> Volver a Categorías
+  </a>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h2><i class="fa-solid fa-folder-plus" style="color:var(--forest-main);margin-right:8px;"></i>{{ titulo }}</h2>
+  </div>
+  <div class="card-body">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-grid">
+        <!-- Nombre -->
+        <div class="form-group">
+          <label for="{{ form.nombre.id_for_label }}">{{ form.nombre.label }}</label>
+          {{ form.nombre }}
+          {% if form.nombre.errors %}<p class="form-error">{{ form.nombre.errors.0 }}</p>{% endif %}
+        </div>
+
+        <!-- Ícono -->
+        <div class="form-group">
+          <label for="{{ form.icono.id_for_label }}">{{ form.icono.label }}</label>
+          {{ form.icono }}
+          <p class="form-help">Ej: <code>fa-utensils</code>, <code>fa-tree</code>, <code>fa-table</code>, <code>fa-layer-group</code>. Ver iconos en <a href="https://fontawesome.com/icons" target="_blank" style="color:var(--forest-main);">fontawesome.com</a></p>
+          {% if form.icono.errors %}<p class="form-error">{{ form.icono.errors.0 }}</p>{% endif %}
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-group full-width">
+          <label for="{{ form.descripcion.id_for_label }}">{{ form.descripcion.label }}</label>
+          {{ form.descripcion }}
+          {% if form.descripcion.errors %}<p class="form-error">{{ form.descripcion.errors.0 }}</p>{% endif %}
+        </div>
+
+        <!-- Orden -->
+        <div class="form-group">
+          <label for="{{ form.orden.id_for_label }}">{{ form.orden.label }}</label>
+          {{ form.orden }}
+          <p class="form-help">Número menor = aparece primero</p>
+          {% if form.orden.errors %}<p class="form-error">{{ form.orden.errors.0 }}</p>{% endif %}
+        </div>
+
+        <!-- Activa -->
+        <div class="form-group">
+          <label>{{ form.activa.label }}</label>
+          <div class="form-check-wrap">
+            {{ form.activa }}
+            <label class="form-check-label" for="{{ form.activa.id_for_label }}">Mostrar categoría en el sitio</label>
+          </div>
+          {% if form.activa.errors %}<p class="form-error">{{ form.activa.errors.0 }}</p>{% endif %}
+        </div>
+      </div>
+
+      <!-- Preview del ícono -->
+      <div style="margin-top:16px;padding:14px 18px;background:var(--bg-page);border-radius:10px;display:flex;align-items:center;gap:14px;">
+        <div id="iconPreview" style="width:42px;height:42px;border-radius:8px;background:linear-gradient(135deg,var(--forest-dark),var(--forest-deep));color:var(--wood-light);display:flex;align-items:center;justify-content:center;font-size:1.1rem;">
+          <i id="iconPreviewI" class="fa-solid fa-box"></i>
+        </div>
+        <span style="font-size:0.82rem;color:var(--text-m);">Vista previa del ícono</span>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar Categoría</button>
+        <a href="{% url 'categorias_list' %}" class="btn btn-secondary">Cancelar</a>
+        {% if obj %}
+          <a href="{% url 'categoria_delete' obj.pk %}" class="btn btn-danger" style="margin-left:auto;"><i class="fa-solid fa-trash"></i> Eliminar</a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const iconInput = document.querySelector('[name="icono"]');
+  const iconEl = document.getElementById('iconPreviewI');
+  if (iconInput) {
+    iconInput.addEventListener('input', () => {
+      iconEl.className = 'fa-solid ' + iconInput.value.trim();
+    });
+    // init
+    if (iconInput.value) iconEl.className = 'fa-solid ' + iconInput.value.trim();
+  }
+</script>
+{% endblock %}
