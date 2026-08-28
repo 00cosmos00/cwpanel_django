@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Categoria(models.Model):
@@ -19,6 +20,9 @@ class Categoria(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    def get_absolute_url(self):
+        return f"{reverse('productos')}?cat={self.pk}"
 
 
 class Producto(models.Model):
