@@ -3,8 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}CW Panel Ltda. | Tableros de Mueblería & Maderas Nobles{% endblock %}</title>
-  <meta name="description" content="Especialistas en la fabricación de tableros alistonados y finger-joint en Pino Oregón, Acacia y maderas nobles.">
+
+  <!-- ═══════════════════════════════════════════════
+       SEO — Título y descripción dinámicos por página
+  ════════════════════════════════════════════════ -->
+  <title>{% block title %}CW Panel Ltda. | Tableros de Madera y Maderas Nobles en Chile{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}CW Panel Ltda. — Especialistas en tableros alistonados y finger-joint de Pino Oregón, Acacia y maderas nobles en Chile. Cotiza hoy.{% endblock %}">
+  <meta name="keywords" content="{% block meta_keywords %}tableros de madera Chile, tableros alistonados Chile, finger joint Chile, pino oregón Chile, madera para muebles Chile, proveedor madera Santiago, tableros para carpintería Chile, maderas nobles Chile{% endblock %}">
+  <meta name="author" content="CW Panel Ltda.">
+  <meta name="robots" content="index, follow">
+  <meta name="geo.region" content="CL">
+  <meta name="geo.placename" content="Chile">
+  <link rel="canonical" href="https://cwpanel.cl{% block canonical_path %}{% endblock %}">
+
+  <!-- ═══════════════════════════════════════
+       Open Graph — Compartir en redes sociales
+  ════════════════════════════════════════ -->
+  <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+  <meta property="og:site_name" content="CW Panel Ltda.">
+  <meta property="og:title" content="{% block og_title %}CW Panel Ltda. | Tableros de Madera en Chile{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}Especialistas en tableros alistonados y finger-joint de Pino Oregón, Acacia y maderas nobles. Fabricación y venta en Chile.{% endblock %}">
+  <meta property="og:image" content="{% block og_image %}https://cwpanel.cl/static/img/og-default.jpg{% endblock %}">
+  <meta property="og:url" content="https://cwpanel.cl{% block og_url %}{% endblock %}">
+  <meta property="og:locale" content="es_CL">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% block twitter_title %}CW Panel Ltda. | Tableros de Madera en Chile{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}Tableros alistonados y finger-joint en Chile. Pino Oregón, Acacia y maderas nobles seleccionadas.{% endblock %}">
+  <meta name="twitter:image" content="{% block twitter_image %}https://cwpanel.cl/static/img/og-default.jpg{% endblock %}">
+
+  <!-- Schema.org — Organización -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "CW Panel Ltda.",
+    "url": "https://cwpanel.cl",
+    "logo": "https://cwpanel.cl/static/img/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "availableLanguage": "Spanish",
+      "areaServed": "CL"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Chile"
+    },
+    "description": "Especialistas en fabricación y venta de tableros alistonados y finger-joint en Pino Oregón, Acacia y maderas nobles en Chile."
+  }
+  </script>
+
+  {% block extra_schema %}{% endblock %}
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

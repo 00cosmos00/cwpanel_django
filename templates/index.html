@@ -1,5 +1,33 @@
 {% extends "base.html" %}
-{% block title %}CW Panel Ltda. | Tableros de Mueblería & Maderas Nobles Seleccionadas{% endblock %}
+{% block title %}CW Panel Ltda. | Tableros de Madera y Maderas Nobles en Chile{% endblock %}
+{% block canonical_path %}/{% endblock %}
+
+{% block meta_description %}CW Panel Ltda. — Fabricantes y proveedores de tableros alistonados y finger-joint en Pino Oregón, Acacia, Bambú y maderas nobles en Chile. Cotiza hoy y recibe asesoría personalizada.{% endblock %}
+{% block meta_keywords %}tableros de madera Chile, tableros alistonados Chile, finger joint pino oregón, madera para muebles Santiago, proveedor madera noble Chile, tableros acacia Chile, tableros bambú Chile, CW Panel{% endblock %}
+
+{% block og_title %}CW Panel Ltda. | Tableros de Madera en Chile{% endblock %}
+{% block og_description %}Fabricantes de tableros alistonados y finger-joint en Pino Oregón, Acacia y maderas nobles. Proveedor confiable en Chile.{% endblock %}
+{% block og_url %}/{% endblock %}
+
+{% block extra_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "CW Panel Ltda.",
+  "url": "https://cwpanel.cl",
+  "description": "Fabricantes y proveedores de tableros alistonados y finger-joint en maderas nobles en Chile.",
+  "areaServed": {
+    "@type": "Country",
+    "name": "Chile"
+  },
+  "priceRange": "$$",
+  "currenciesAccepted": "CLP",
+  "paymentAccepted": "Transferencia bancaria, efectivo",
+  "openingHours": "Mo-Fr 09:00-18:00"
+}
+</script>
+{% endblock %}
 
 {% block extra_css %}
 <style>
