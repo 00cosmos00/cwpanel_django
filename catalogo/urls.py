@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
@@ -7,7 +8,11 @@ urlpatterns = [
     path('productos/', views.productos_view, name='productos'),
     path('productos/<int:pk>/', views.producto_detalle, name='producto_detalle'),
 
-    # Panel admin personalizado — ahora en /admin/
+    # Login / Logout del panel
+    path('admin/login/', auth_views.LoginView.as_view(template_name='admin_custom/login.html'), name='login'),
+    path('admin/logout/', auth_views.LogoutView.as_view(next_page='/admin/login/'), name='logout'),
+
+    # Panel admin personalizado — protegido con @login_required
     path('admin/', views.panel_dashboard, name='panel_dashboard'),
 
     # Categorías

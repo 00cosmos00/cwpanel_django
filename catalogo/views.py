@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from .models import Categoria, Producto
 from .forms import CategoriaForm, ProductoForm
 
@@ -64,6 +65,7 @@ def producto_detalle(request, pk):
 #  PANEL ADMIN PERSONALIZADO
 # ─────────────────────────────────────────────
 
+@login_required
 def panel_dashboard(request):
     """Dashboard principal del panel admin."""
     ctx = {
@@ -78,11 +80,13 @@ def panel_dashboard(request):
 
 # ── Categorías ──
 
+@login_required
 def categorias_list(request):
     categorias = Categoria.objects.all()
     return render(request, 'admin_custom/categorias_list.html', {'categorias': categorias})
 
 
+@login_required
 def categoria_create(request):
     form = CategoriaForm(request.POST or None)
     if form.is_valid():
@@ -92,6 +96,7 @@ def categoria_create(request):
     return render(request, 'admin_custom/categorias_form.html', {'form': form, 'titulo': 'Nueva Categoría'})
 
 
+@login_required
 def categoria_edit(request, pk):
     obj = get_object_or_404(Categoria, pk=pk)
     form = CategoriaForm(request.POST or None, instance=obj)
@@ -102,6 +107,7 @@ def categoria_edit(request, pk):
     return render(request, 'admin_custom/categorias_form.html', {'form': form, 'titulo': f'Editar: {obj.nombre}', 'obj': obj})
 
 
+@login_required
 def categoria_delete(request, pk):
     obj = get_object_or_404(Categoria, pk=pk)
     if request.method == 'POST':
@@ -113,11 +119,13 @@ def categoria_delete(request, pk):
 
 # ── Productos ──
 
+@login_required
 def productos_list(request):
     productos = Producto.objects.select_related('categoria').all()
     return render(request, 'admin_custom/productos_list.html', {'productos': productos})
 
 
+@login_required
 def producto_create(request):
     form = ProductoForm(request.POST or None, request.FILES or None)
     if form.is_valid():
@@ -127,6 +135,7 @@ def producto_create(request):
     return render(request, 'admin_custom/productos_form.html', {'form': form, 'titulo': 'Nuevo Producto'})
 
 
+@login_required
 def producto_edit(request, pk):
     obj = get_object_or_404(Producto, pk=pk)
     form = ProductoForm(request.POST or None, request.FILES or None, instance=obj)
@@ -137,6 +146,7 @@ def producto_edit(request, pk):
     return render(request, 'admin_custom/productos_form.html', {'form': form, 'titulo': f'Editar: {obj.nombre}', 'obj': obj})
 
 
+@login_required
 def producto_delete(request, pk):
     obj = get_object_or_404(Producto, pk=pk)
     if request.method == 'POST':
@@ -144,3 +154,4 @@ def producto_delete(request, pk):
         messages.success(request, 'Producto eliminado.')
         return redirect('productos_list')
     return render(request, 'admin_custom/confirm_delete.html', {'obj': obj, 'tipo': 'Producto'})
+

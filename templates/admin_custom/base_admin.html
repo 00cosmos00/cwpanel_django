@@ -205,7 +205,12 @@
       </a>
     </nav>
     <div class="sidebar-footer">
-      <a href="{% url 'index' %}"><i class="fa-solid fa-house"></i> Ir al Sitio</a>
+      <div style="font-size:12px; color:rgba(212,230,195,0.5); margin-bottom:8px;">
+        <i class="fa-solid fa-circle-user"></i>&nbsp; {{ request.user.username }}
+      </div>
+      <a href="{% url 'logout' %}" style="color:#f08080; font-size:13px; text-decoration:none;">
+        <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+      </a>
     </div>
   </aside>
 

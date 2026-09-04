@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Acceso Panel — CW Panel Ltda.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a2e1a 0%, #2d4a2d 40%, #1a3020 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Árboles decorativos de fondo */
+    body::before {
+      content: '';
+      position: fixed;
+      bottom: 0; left: 0;
+      width: 100%; height: 100%;
+      background:
+        radial-gradient(ellipse 60px 200px at 5% 100%, #2d5a2d88 0%, transparent 70%),
+        radial-gradient(ellipse 50px 180px at 15% 100%, #1e4a1e88 0%, transparent 70%),
+        radial-gradient(ellipse 70px 220px at 85% 100%, #2d5a2d88 0%, transparent 70%),
+        radial-gradient(ellipse 55px 190px at 95% 100%, #1e4a1e88 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+    }
+
+    .login-logo {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .login-logo .icon-wrap {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #4a7c59, #2d5a3d);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 24px rgba(74, 124, 89, 0.4);
+    }
+
+    .login-logo .icon-wrap i {
+      font-size: 32px;
+      color: #d4e6c3;
+    }
+
+    .login-logo h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #d4e6c3;
+      letter-spacing: -0.3px;
+    }
+
+    .login-logo p {
+      font-size: 13px;
+      color: rgba(212, 230, 195, 0.6);
+      margin-top: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(212, 230, 195, 0.7);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(212, 230, 195, 0.4);
+      font-size: 15px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px 12px 42px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      color: #d4e6c3;
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s, background 0.2s;
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color: #4a7c59;
+      background: rgba(74, 124, 89, 0.1);
+    }
+
+    .form-group input::placeholder {
+      color: rgba(212, 230, 195, 0.3);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #4a7c59, #2d5a3d);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      margin-top: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-login:hover { opacity: 0.9; }
+    .btn-login:active { transform: scale(0.99); }
+
+    .error-msg {
+      background: rgba(220, 53, 69, 0.15);
+      border: 1px solid rgba(220, 53, 69, 0.3);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+      color: #f8b4b9;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 12px;
+      color: rgba(212, 230, 195, 0.35);
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-card">
+  <div class="login-logo">
+    <div class="icon-wrap">
+      <i class="fa-solid fa-tree"></i>
+    </div>
+    <h1>CW Panel Ltda.</h1>
+    <p>Acceso al Panel de Administración</p>
+  </div>
+
+  {% if form.errors %}
+  <div class="error-msg">
+    <i class="fa-solid fa-circle-exclamation"></i>
+    Usuario o contraseña incorrectos. Intenta nuevamente.
+  </div>
+  {% endif %}
+
+  <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}"/>
+
+    <div class="form-group">
+      <label for="id_username">Usuario</label>
+      <div class="input-wrap">
+        <i class="fa-solid fa-user"></i>
+        <input
+          type="text"
+          name="username"
+          id="id_username"
+          placeholder="Ingresa tu usuario"
+          autocomplete="username"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="id_password">Contraseña</label>
+      <div class="input-wrap">
+        <i class="fa-solid fa-lock"></i>
+        <input
+          type="password"
+          name="password"
+          id="id_password"
+          placeholder="Ingresa tu contraseña"
+          autocomplete="current-password"
+          required
+        />
+      </div>
+    </div>
+
+    <button type="submit" class="btn-login">
+      <i class="fa-solid fa-right-to-bracket"></i>&nbsp; Ingresar al Panel
+    </button>
+  </form>
+
+  <p class="footer-note">Acceso restringido — Solo personal autorizado</p>
+</div>
+
+</body>
+</html>
