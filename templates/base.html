@@ -242,6 +242,7 @@
           <li><a href="{% url 'index' %}#nosotros" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>Nosotros</a></li>
           <li><a href="{% url 'index' %}#especies">Especies</a></li>
           <li><a href="{% url 'productos' %}" {% if request.resolver_match.url_name == 'productos' %}class="active"{% endif %}>Productos</a></li>
+          <li><a href="{% url 'index' %}#ideas">Ideas</a></li>
           <li><a href="{% url 'index' %}#galeria">Galería</a></li>
           <li><a href="{% url 'index' %}#redes">Contacto</a></li>
         </ul>
@@ -260,6 +261,7 @@
       <li><a href="{% url 'index' %}#nosotros">Nosotros</a></li>
       <li><a href="{% url 'index' %}#especies">Especies</a></li>
       <li><a href="{% url 'productos' %}">Productos</a></li>
+      <li><a href="{% url 'index' %}#ideas">Ideas</a></li>
       <li><a href="{% url 'index' %}#galeria">Galería</a></li>
       <li><a href="{% url 'index' %}#redes">Contacto</a></li>
       <li><a href="https://wa.me/56996422795" target="_blank">💬 Cotizar por WhatsApp</a></li>

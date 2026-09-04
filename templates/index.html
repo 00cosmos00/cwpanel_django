@@ -181,6 +181,141 @@
     background: var(--forest-deep);
     color: #fff;
   }
+
+  /* ====== IDEAS CON TABLEROS ====== */
+  .ideas-section {
+    padding: 60px 0 70px;
+    position: relative;
+    z-index: 10;
+  }
+  .ideas-masonry {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin-top: 36px;
+  }
+  .idea-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--border-card);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .idea-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px rgba(11, 34, 21, 0.12);
+    border-color: var(--wood-warm);
+  }
+  .idea-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+    background: #e8e3dc;
+  }
+  .idea-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
+  }
+  .idea-card:hover .idea-img-wrap img {
+    transform: scale(1.06);
+  }
+  .idea-overlay {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+  }
+  .idea-badge {
+    background: rgba(14, 39, 25, 0.82);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: var(--wood-light);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .idea-info {
+    padding: 18px 18px 22px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .idea-info h4 {
+    font-family: var(--font-title);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--forest-dark);
+    margin-bottom: 8px;
+  }
+  .idea-info p {
+    font-size: 0.84rem;
+    color: var(--text-body);
+    line-height: 1.5;
+    margin: 0;
+  }
+  .ideas-cta {
+    text-align: center;
+    margin-top: 45px;
+    padding: 28px 20px;
+    background: linear-gradient(135deg, rgba(24, 62, 41, 0.06), rgba(184, 115, 51, 0.08));
+    border-radius: 16px;
+    border: 1px dashed var(--border-subtle);
+  }
+  .ideas-cta p {
+    font-size: 1.05rem;
+    color: var(--forest-dark);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .btn-ideas-ver {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--forest-dark);
+    color: var(--text-light);
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-ideas-ver:hover {
+    background: var(--wood-rich);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  @media (max-width: 1024px) {
+    .ideas-masonry {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .ideas-masonry {
+      grid-template-columns: 1fr;
+    }
+    .idea-img-wrap {
+      height: 220px;
+    }
+  }
 </style>
 {% endblock %}
 
@@ -529,6 +664,143 @@
         <div class="pillar-content"><h5>Manejo Sustentable</h5><p>Compromiso con la reforestación y el cuidado del bosque nativo.</p></div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GALERÍA IDEAS CON TABLEROS
+════════════════════════════════════════════════════════════════ -->
+<section class="ideas-section" id="ideas">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag"><i class="fa-solid fa-lightbulb"></i> Inspiración</span>
+      <h2 class="section-title">Ideas que puedes crear <span class="accent">con nuestros tableros</span></h2>
+      <p class="section-desc">Cada tablero es una oportunidad para diseñar algo único. Mira lo que se puede lograr con madera maciza de alta calidad.</p>
+    </div>
+
+    <div class="ideas-masonry">
+
+      <!-- Tarjeta 1 — Mesa comedor + muro divisorio -->
+      <div class="idea-card reveal delay-1">
+        <div class="idea-img-wrap">
+          <img src="{% static 'img/ideas/1.png' %}" alt="Mesa de comedor en madera maciza con muro divisorio de tableros alistonados" loading="lazy">
+          <div class="idea-overlay">
+            <span class="idea-badge"><i class="fa-solid fa-table-cells"></i> Muro Divisorio & Mesa</span>
+          </div>
+        </div>
+        <div class="idea-info">
+          <h4>Mesa & Muro Divisorio</h4>
+          <p>Tableros y listones ensamblados para crear una pantalla divisoria acústico-visual y mesa de comedor a juego.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta 2 — Asiento artesanal -->
+      <div class="idea-card reveal delay-2">
+        <div class="idea-img-wrap">
+          <img src="{% static 'img/ideas/Asiento.jpg' %}" alt="Banquillo o asiento artesanal en madera sólida de tablero" loading="lazy">
+          <div class="idea-overlay">
+            <span class="idea-badge"><i class="fa-solid fa-chair"></i> Asiento / Banquillo</span>
+          </div>
+        </div>
+        <div class="idea-info">
+          <h4>Asiento Artesanal</h4>
+          <p>Banquillo macizo con acabado fino que resalta la veta natural. Resistencia y diseño en una sola pieza.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta 3 — Cubierta de baño -->
+      <div class="idea-card reveal delay-3">
+        <div class="idea-img-wrap">
+          <img src="{% static 'img/ideas/Cubierta de baño 2.jpg' %}" alt="Cubierta de baño en madera natural tratada con lavamanos de sobreponer" loading="lazy">
+          <div class="idea-overlay">
+            <span class="idea-badge"><i class="fa-solid fa-bath"></i> Cubierta de Baño</span>
+          </div>
+        </div>
+        <div class="idea-info">
+          <h4>Cubierta de Baño</h4>
+          <p>Tablero macizo tratado como mesón de vanitorio. Aporta la calidez orgánica que transforma cualquier baño.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta 4 — Cubierta cocina (clara) -->
+      <div class="idea-card reveal delay-4">
+        <div class="idea-img-wrap">
+          <img src="{% static 'img/ideas/Cubierta de cocina.jpg' %}" alt="Cubierta de cocina y salpicadera en tablero de madera clara" loading="lazy">
+          <div class="idea-overlay">
+            <span class="idea-badge"><i class="fa-solid fa-kitchen-set"></i> Cocina Moderna</span>
+          </div>
+        </div>
+        <div class="idea-info">
+          <h4>Cubierta de Cocina</h4>
+          <p>Mesón y salpicadera en madera clara calibrada. Una estética limpia y nórdica lista para sellar y proteger.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta 5 — Escritorio de trabajo -->
+      <div class="idea-card reveal delay-1">
+        <div class="idea-img-wrap">
+          <img src="{% static 'img/ideas/Escritorio.jpg' %}" alt="Escritorio para home office en tablero de madera noble" loading="lazy">
+          <div class="idea-overlay">
+            <span class="idea-badge"><i class="fa-solid fa-laptop"></i> Home Office</span>
+          </div>
+        </div>
+        <div class="idea-info">
+          <h4>Escritorio de Trabajo</h4>
+          <p>Tablero de 25 o 32 mm convertido en una estación de trabajo ergonómica, robusta y con carácter.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta 6 — Isla de cocina -->
+      <div class="idea-card reveal delay-2">
+        <div class="idea-img-wrap">
+          <img src="{% static 'img/ideas/Isla.jpg' %}" alt="Isla central de cocina con cubierta de tablero macizo de gran formato" loading="lazy">
+          <div class="idea-overlay">
+            <span class="idea-badge"><i class="fa-solid fa-island-tropical"></i> Isla Central</span>
+          </div>
+        </div>
+        <div class="idea-info">
+          <h4>Isla de Cocina</h4>
+          <p>El punto focal de toda cocina de concepto abierto: un mesón central amplio, durable y acogedor.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta 7 — Comedor premium -->
+      <div class="idea-card reveal delay-3">
+        <div class="idea-img-wrap">
+          <img src="{% static 'img/ideas/comedor4.jpg' %}" alt="Comedor de alto estándar con mesa maciza y cielo revestido en madera" loading="lazy">
+          <div class="idea-overlay">
+            <span class="idea-badge"><i class="fa-solid fa-utensils"></i> Comedor Premium</span>
+          </div>
+        </div>
+        <div class="idea-info">
+          <h4>Comedor de Alto Estándar</h4>
+          <p>Mesa de comedor para 8 a 10 personas con tablero calibrado de 40 mm. Calidad para toda la vida.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta 8 — Cubierta cocina oscura -->
+      <div class="idea-card reveal delay-4">
+        <div class="idea-img-wrap">
+          <img src="{% static 'img/ideas/cubierta cocina 2.jpg' %}" alt="Cubierta de cocina en tono madera cálida con muebles lacados" loading="lazy">
+          <div class="idea-overlay">
+            <span class="idea-badge"><i class="fa-solid fa-fire-burner"></i> Cubierta & Respaldo</span>
+          </div>
+        </div>
+        <div class="idea-info">
+          <h4>Cubierta & Respaldo</h4>
+          <p>Combinación de mesón y revestimiento de muro en madera contrastando con mobiliario moderno.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ideas-cta reveal">
+      <p>¿Tienes un proyecto en mente? Fabricamos tableros a medida según tus requerimientos técnicos.</p>
+      <a href="/productos/" class="btn-ideas-ver">
+        <i class="fa-solid fa-arrow-right"></i> Explorar Catálogo de Tableros
+      </a>
+    </div>
+
   </div>
 </section>
 
