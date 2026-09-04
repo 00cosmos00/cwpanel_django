@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-cwpanel-dev-key-cambiar-en-produccion-2026'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['cwpanel.cl','www.cwpanel.cl']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
