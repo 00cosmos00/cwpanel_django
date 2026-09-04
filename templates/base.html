@@ -425,11 +425,9 @@
       window.addEventListener('scroll',()=>{
         const st=window.scrollY, dh=document.body.scrollHeight-window.innerHeight;
         const raw=dh>0?st/dh:0;
-        // Interpolamos entre MIN_TREE (arriba) y 1 (abajo)
-        const mapped = MIN_TREE + raw * (1 - MIN_TREE);
-        targetProgress=Math.max(maxProgressReached, mapped);
-        maxProgressReached=targetProgress;
-        // Scroll progress bar (barra usa el raw sin offset)
+        // El tamaño del árbol es proporcional al scroll: pequeño arriba, grande abajo
+        targetProgress = MIN_TREE + raw * (1 - MIN_TREE);
+        // Scroll progress bar
         document.getElementById('scrollBar').style.width=(raw*100)+'%';
         if(!rafId) rafId=requestAnimationFrame(animate);
       },{ passive:true });
@@ -454,7 +452,6 @@
       // Iniciar el árbol con tamaño pequeño desde el comienzo
       currentProgress = MIN_TREE;
       targetProgress  = MIN_TREE;
-      maxProgressReached = MIN_TREE;
       resize();
     });
 
