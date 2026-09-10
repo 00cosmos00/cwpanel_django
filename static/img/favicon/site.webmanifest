@@ -1,0 +1,21 @@
+{
+  "name": "CW Panel Ltda.",
+  "short_name": "CW Panel",
+  "icons": [
+    {
+      "src": "/static/img/favicon/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/static/img/favicon/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": "#0b2215",
+  "background_color": "#faf8f4",
+  "display": "standalone"
+}

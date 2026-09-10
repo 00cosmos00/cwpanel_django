@@ -65,6 +65,17 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+  <!-- ═══════════════════════════════════════
+       FAVICON & PWA ICONS
+  ════════════════════════════════════════ -->
+  {% load static %}
+  <link rel="icon" type="image/x-icon"  href="{% static 'img/favicon/favicon.ico' %}">
+  <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon/favicon.svg' %}">
+  <link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/favicon/favicon-96x96.png' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicon/apple-touch-icon.png' %}">
+  <link rel="manifest" href="{% static 'img/favicon/site.webmanifest' %}">
+  <meta name="theme-color" content="#0b2215">
+
   <style>
     /* ====== VARIABLES ====== */
     :root {
