@@ -19,6 +19,12 @@ def index(request):
     })
 
 
+def inicio2_view(request):
+    """Página de inicio 2 — diseño alternativo standalone inspirado en el flyer."""
+    return render(request, 'inicio2.html')
+
+
+
 def productos_view(request):
     """Página de productos agrupados por categoría."""
     cat_id = request.GET.get('cat')
